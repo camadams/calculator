@@ -1,0 +1,4 @@
+
+fix useQuery({ userId: "user_2SkyEypAywRHAoEYxRkJlaDSDXw" }); in HistoryForUser.tsx
+
+make  getHistByUserId: publicProcedure private in calculatorHistory.ts

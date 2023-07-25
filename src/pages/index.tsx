@@ -22,7 +22,7 @@ export default function Home() {
         {!user.isSignedIn && <SignInButton />}
         {!!user.isSignedIn && <SignOutButton />}
         <Calculator />
-        {!!user.isSignedIn && <HistoryForUser xxx={user.user.id} />}
+        {!!user.isSignedIn}
       </div>
 
       <div>
