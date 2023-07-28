@@ -14,23 +14,27 @@ const filt = (user: User) => {
 }
 
 export const calculatorHistoryRouter = createTRPCRouter({
-  getAll: publicProcedure.query(async ({ ctx }) => {
-    const history = await ctx.prisma.calculatorHistory.findMany({ take: 100, });
-    const users = (await clerkClient.users.getUserList({
-      userId: history.map((hist) => hist.userId),
-      limit: 100,
-    })).map(filt);
+  // getAll: publicProcedure.query(async ({ ctx }) => {
+  //   const history = await ctx.prisma.calculatorHistory.findMany({ take: 100, });
+  //   const users = (await clerkClient.users.getUserList({
+  //     userId: history.map((hist) => hist.userId),
+  //     limit: 100,
+  //   })).map(filt);
 
-    return history.map((hist) => {
-      const user = users.find((user) => user.id === hist.userId);
-      if (!user) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "User for history not found" });
-      return { hist, user: user, }
-    });
+  //   return history.map((hist) => {
+  //     const user = users.find((user) => user.id === hist.userId);
+  //     if (!user) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "User for history not found" });
+  //     return { hist, user: user, }
+  //   });
+  // }),
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.calculatorHistory.findMany({ take: 100, });
   }),
-  getByUserId: privateProcedure
+
+
+  getByUserId: publicProcedure
     .query(async ({ ctx, input }) => {
       const history = await ctx.prisma.calculatorHistory.findMany();
-      console.log("history from hist router: ", history);
       return history.map((hist) => {
         // const user = users.find((user) => user.id === hist.userId);
         // if (!user) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "User for history not found" });
@@ -43,12 +47,13 @@ export const calculatorHistoryRouter = createTRPCRouter({
   getHistByUserId: publicProcedure
     .input(z.object({ userId: z.string(), }))
     .query(async ({ ctx, input }) => {
-      console.log("########### userId in calculatorHistoryRouter: ", input.userId)
       const hist = await ctx.prisma.calculatorHistory.findMany({
         where: { userId: input.userId, },
         take: 100,
         orderBy: [{ createdAt: "desc" }],
       });
+      console.log("hello baby", input.userId);
+
       return hist;
 
       // const users = (await clerkClient.users.getUserList({

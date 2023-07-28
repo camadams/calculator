@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { RouterOutputs, api } from "~/utils/api";
 
@@ -10,40 +11,50 @@ interface abc {
 
 type Hist = RouterOutputs["calculatorHistory"]["getHistByUserId"][number];
 
-const handleHistoryClick = (hist: Hist, setResult: React.Dispatch<React.SetStateAction<string>>, setExpression: React.Dispatch<React.SetStateAction<string>>) => {
-  const equation = hist.content;
-  const equationParts = equation.split("=");
-  const result = equationParts[1];
-  const expression = equationParts[0];
-  if (result === undefined || expression === undefined) {
-    toast.error("This equation is invalid");
-    return;
-  }
-  setResult(result);
-  setExpression(expression);
-};
-
-const HistoryForUser = (props: abc) => {
+const HistoryForUser = ({ userId, setResult, setExpression }: abc) => {
   // const { data, isLoading } = api.calculatorHistory.getByUserId.useQuery();
-  const { data, isLoading } = api.calculatorHistory.getHistByUserId.useQuery({ userId: "user_2SkyEypAywRHAoEYxRkJlaDSDXw" });
+  const { data, isLoading } = api.calculatorHistory.getHistByUserId.useQuery({ userId: userId });
   // const b = api.calculatorHistory.getAll.useQuery();
-
+  console.log("*^*^*^*^*^* user history for user with id '", userId, "' in HistoryForUser.tsx", data);
   //   const { data, isLoading } = api.calculatorHistory.getAll.useQuery();
   //   if (isLoading) return <div>loading</div>;
-  console.log("getByUserId data in HistoryForUser component:", data);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleHistoryClick = (hist: Hist) => {
+    const equation = hist.content;
+    const equationParts = hist.content.split("=");
+    const result = equationParts[1];
+    const expression = equationParts[0];
+    if (result && expression) {
+      setResult(result);
+      setExpression(expression + "=");
+    } else {
+      toast.error(equation + " is not a valid equation.");
+    }
+  };
+
   return (
     <div>
-      <div>
-        {isLoading ? (
-          <div>load for user</div>
-        ) : (
-          data?.map((hist) => (
-            <div className="hover:bg-slate-200" key={hist.id} onClick={() => handleHistoryClick(hist, props.setResult, props.setExpression)}>
-              {hist.content} : {hist.createdAt.getDate()}
-            </div>
-          ))
-        )}
-      </div>
+      <button onClick={toggleDropdown}>{(isOpen ? "Close" : "Open") + " History"}</button>
+      {isLoading ? (
+        <div>Loading</div>
+      ) : (
+        isOpen && (
+          <ul>
+            {data?.map((hist) => (
+              <li className="hover:bg-slate-200" key={hist.id} onClick={() => handleHistoryClick(hist)}>
+                {hist.content}
+              </li>
+            ))}
+          </ul>
+        )
+      )}
+      <p>{userId}</p>
     </div>
   );
 };
