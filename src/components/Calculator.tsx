@@ -11,7 +11,7 @@ const Calculator = ({ userId }: { userId: string }) => {
     setResult((prevValue) => prevValue + input);
   };
 
-  const { mutate } = api.calculatorHistory.create.useMutation({});
+  // const { mutate } = api.calculatorHistory.create.useMutation({});
   const handleEquals = () => {
     try {
       // const ans: any = Math.round(eval(result) * 1000) / 1000;

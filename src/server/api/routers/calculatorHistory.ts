@@ -1,8 +1,8 @@
 import { clerkClient } from "@clerk/nextjs";
-import { User } from "@clerk/nextjs/dist/types/server";
+import { User } from "@clerk/nextjs/dist/types/server/clerkClient";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 
 const filt = (user: User) => {
@@ -27,9 +27,26 @@ export const calculatorHistoryRouter = createTRPCRouter({
   //     return { hist, user: user, }
   //   });
   // }),
-  getAll: publicProcedure.query(async ({ ctx }) => {
+  getAll: publicProcedure.input(z.object({ userId: z.string() })).query(async ({ ctx }) => {
     return await ctx.prisma.calculatorHistory.findMany({ take: 100, });
   }),
+
+  getAll2: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.calculatorHistory.findMany({ take: 100, });
+  }),
+
+  getSecretMessage: publicProcedure.query(() => {
+    return "you can now see this secret message!";
+  }),
+
+  // getAll: publicProcedure
+  // // .input(z.object({ userId: z.string(), }))
+  // .query(async ({ ctx }) => {
+  //   // console.log("asdfasdfasdfasdfasdfsda", input.userId);
+  //   console.log("asdfasdfasdfasdfasdfsda");
+  //   const a = await ctx.prisma.calculatorHistory.findMany({ take: 100, });
+  //   return a;
+  // }),
 
 
   getByUserId: publicProcedure
@@ -47,12 +64,13 @@ export const calculatorHistoryRouter = createTRPCRouter({
   getHistByUserId: publicProcedure
     .input(z.object({ userId: z.string(), }))
     .query(async ({ ctx, input }) => {
+      console.log("*&(^(*&$#^*GFDEI*U&FT*&^(#$*YEF*&^))): ", input.userId);
       const hist = await ctx.prisma.calculatorHistory.findMany({
         where: { userId: input.userId, },
         take: 100,
         orderBy: [{ createdAt: "desc" }],
       });
-      console.log("hello baby", input.userId);
+
 
       return hist;
 
@@ -68,15 +86,15 @@ export const calculatorHistoryRouter = createTRPCRouter({
       // });
     }),
 
-  create: privateProcedure
-    .input(z.object({ content: z.string(), }))
-    .mutation(async (opts) => {
-      const userId = opts.ctx.userId;
-      const hist = await opts.ctx.prisma.calculatorHistory.create({
-        data: {
-          userId,
-          content: opts.input.content,
-        }
-      });
-    }),
+  // create: privateProcedure
+  //   .input(z.object({ content: z.string(), }))
+  //   .mutation(async (opts) => {
+  //     const userId = opts.ctx.userId;
+  //     const hist = await opts.ctx.prisma.calculatorHistory.create({
+  //       data: {
+  //         userId,
+  //         content: opts.input.content,
+  //       }
+  //     });
+  //   }),
 });
