@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+<<<<<<< HEAD
+=======
+
+body {
+    @apply bg-blue-200
+}
+>>>>>>> def2284128bf66f79faf8c549edd826a4e31f69c
