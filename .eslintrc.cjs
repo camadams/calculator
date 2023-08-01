@@ -1,3 +1,17 @@
+<<<<<<< HEAD
+/** @type {import("eslint").Linter.Config} */
+const config = {
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project: true,
+  },
+  plugins: ["@typescript-eslint"],
+  extends: [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
+  ],
+=======
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require("path");
 
@@ -20,6 +34,7 @@ const config = {
   },
   plugins: ["@typescript-eslint"],
   extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+>>>>>>> def2284128bf66f79faf8c549edd826a4e31f69c
   rules: {
     "@typescript-eslint/consistent-type-imports": [
       "warn",

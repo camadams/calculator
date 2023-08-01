@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+import NextAuth from "next-auth";
+import { authOptions } from "~/server/auth";
+
+export default NextAuth(authOptions);
+=======
 import { PrismaClient } from '@prisma/client';
 import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
@@ -21,3 +27,4 @@ export default NextAuth({
     ],
     adapter: PrismaAdapter(prisma),
 });
+>>>>>>> def2284128bf66f79faf8c549edd826a4e31f69c

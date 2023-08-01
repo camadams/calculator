@@ -61,6 +61,8 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   });
 };
 
+<<<<<<< HEAD
+=======
 // export const createTRPCContext = (_opts: CreateNextContextOptions) => {
 
 //  const { req } = _opts;
@@ -76,6 +78,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 // };
 
 
+>>>>>>> def2284128bf66f79faf8c549edd826a4e31f69c
 /**
  * 2. INITIALIZATION
  *
