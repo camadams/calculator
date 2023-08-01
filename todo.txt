@@ -1,6 +1,0 @@
-add method to create hist after equals is clicked // api.calculatorHistory.create.useMutation({ content: expression + result });
-
-
-fix <Calculator userId={user.user.id}/>; in index.tsx
-
-make  getHistByUserId: publicProcedure private in calculatorHistory.ts
